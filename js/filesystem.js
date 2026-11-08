@@ -4,47 +4,43 @@
              LocalStorage persistence, ZIP export/import, single file download
    ========================================================================== */
 
-const DEFAULT_MAIN_PY = `# ❤️ سكربت إهداء كوين روري - Queen Rori
-# يطبع قلباً أحمر وبداخله اسم 'كوين روري' باللون الأبيض والأحمر
+const DEFAULT_MAIN_PY = `import os
 
-import time
+os.system('')
 
-# ألوان ANSI للترمينال
-RED = "\\x1b[91;1m"      # أحمر عريض
-WHITE = "\\x1b[97;1m"    # أبيض ناصع
-RESET = "\\x1b[0m"       # إعادة ضبط اللون
-GOLD = "\\x1b[93;1m"     # ذهبي للتاج
+RED = "\\033[91;1m"     
+WHITE = "\\033[97;1m"    
+RESET = "\\033[0m"      
 
 def draw_queen_rori_heart():
     name = "كوين روري"
     
-    heart_art = f"""
-{RED}
-             ♥♥♥♥♥♥♥♥♥♥            ♥♥♥♥♥♥♥♥♥♥
-          ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥      ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-        ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥  ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-       ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-      ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-      ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-      ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-       ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-        ♥♥♥♥♥♥♥♥♥♥♥♥♥♥ {GOLD}👑 {WHITE}{name}{GOLD} 👑{RED} ♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-         ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-           ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-             ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-               ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-                 ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-                   ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-                     ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥
-                       ♥♥♥♥♥♥♥♥♥♥♥♥
-                         ♥♥♥♥♥♥♥♥
-                           ♥♥♥♥
-                            ♥♥
-{RESET}"""
-    print(heart_art)
-    print(f"{RED}        ╔═══════════════════════════════════════════╗{RESET}")
-    print(f"        {RED}║       {GOLD}👑 {WHITE}إهداء خاص إلى: {name}{GOLD} 👑{RED}       ║{RESET}")
-    print(f"{RED}        ╚═══════════════════════════════════════════╝{RESET}\\n")
+    heart_lines = [
+        "              ♥♥♥♥♥♥♥♥♥♥            ♥♥♥♥♥♥♥♥♥♥",
+        "          ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥        ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "        ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥    ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "       ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "      ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "      ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "      ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "       ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        f"        ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥ {WHITE}{name}{RED} ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "         ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "           ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "             ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "               ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "                 ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "                   ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "                     ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥",
+        "                       ♥♥♥♥♥♥♥♥♥♥♥♥",
+        "                         ♥♥♥♥♥♥♥♥",
+        "                           ♥♥♥♥",
+        "                             ♥♥"
+    ]
+    
+    print()
+    for line in heart_lines:
+        print(f"{RED}{line}{RESET}")
 
 if __name__ == '__main__':
     draw_queen_rori_heart()
@@ -79,8 +75,8 @@ class VirtualFileSystem {
       this.loadDefaultWorkspace();
     }
 
-    // Ensure main.py exists and has the Queen Rori heart script
-    if (!this.files['main.py'] || typeof this.files['main.py'].content !== 'string' || !this.files['main.py'].content.includes('كوين روري')) {
+    // Ensure main.py exists and has the new Queen Rori heart script
+    if (!this.files['main.py'] || typeof this.files['main.py'].content !== 'string' || !this.files['main.py'].content.includes('heart_lines')) {
       this.files['main.py'] = {
         content: DEFAULT_MAIN_PY,
         isFolder: false
@@ -250,7 +246,7 @@ class VirtualFileSystem {
     if (isFolder) {
       if (!oldPath.endsWith('/')) oldPath += '/';
       if (!newPath.endsWith('/')) newPath += '/';
-      
+
       const newFiles = {};
       for (const [k, v] of Object.entries(this.files)) {
         if (k.startsWith(oldPath)) {
@@ -274,7 +270,7 @@ class VirtualFileSystem {
     } else {
       this.files[newPath] = this.files[oldPath];
       delete this.files[oldPath];
-      
+
       this.openTabs = this.openTabs.map(t => t === oldPath ? newPath : t);
       if (this.activeFilePath === oldPath) {
         this.activeFilePath = newPath;
@@ -287,7 +283,7 @@ class VirtualFileSystem {
 
   deleteItem(path) {
     if (!this.files[path]) return false;
-    
+
     if (this.files[path].isFolder) {
       if (!path.endsWith('/')) path += '/';
       for (const k of Object.keys(this.files)) {
