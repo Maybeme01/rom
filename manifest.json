@@ -1,0 +1,21 @@
+{
+  "name": "Queen Rory - Python Web IDE",
+  "short_name": "PyCode",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1e1e1e",
+  "theme_color": "#007acc",
+  "description": "Lightweight, VS Code-inspired Python IDE running 100% in your browser.",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

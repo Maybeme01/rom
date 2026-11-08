@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr" data-theme="vscode-dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Queen Rory - Web Python IDE</title>
+
+  <!-- Google Fonts: JetBrains Mono, Inter, Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- PWA & Mobile Web App Meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PyCode">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- External CDN Libraries: Monaco AMD Loader, Pyodide, JSZip -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- ======================================================================
+         1. TITLEBAR (Top Header)
+         ====================================================================== -->
+    <header class="titlebar">
+      <div class="titlebar-left">
+        <!-- Mobile/Tablet Hamburger Menu -->
+        <button class="mobile-menu-btn" id="btn-mobile-menu" title="Toggle Sidebar Menu">
+          <span>☰</span>
+        </button>
+
+        <div class="app-brand">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#387eb8" />
+          </svg>
+          <span class="brand-text">Queen Rory</span>
+        </div>
+
+        <nav class="titlebar-menu desktop-only">
+          <button class="menu-item" id="btn-open-pc-folder"
+            title="Open real folder from computer (Direct Local Edit)">📂 Open PC Folder</button>
+          <button class="menu-item" id="btn-open-academy" title="أكاديمية بايثون وشروحات الأساسيات والمكتبات (تعلم بايثون)">🎓 تعلم بايثون</button>
+          <button class="menu-item" id="btn-save-file" title="Save file locally (Ctrl+S)">💾 Save</button>
+          <button class="menu-item" id="btn-download-active" title="Download active file to your computer">⬇️ Download
+            File</button>
+          <button class="menu-item" id="btn-export-zip" title="Export entire project as ZIP">📦 Export ZIP</button>
+          <label class="menu-item" style="cursor: pointer;" title="Import file from computer">
+            📂 Open File
+            <input type="file" id="input-import-file" style="display: none;" accept=".py,.txt,.json,.csv,.md">
+          </label>
+          <label class="menu-item" style="cursor: pointer;" title="Import ZIP project from computer">
+            📥 Import ZIP
+            <input type="file" id="input-import-zip" style="display: none;" accept=".zip">
+          </label>
+        </nav>
+      </div>
+
+      <div class="titlebar-center">
+        <button class="run-btn-main" id="btn-run-code" title="Execute Python Code (F5 / Ctrl+Enter)">
+          <span>▶ Run Python</span>
+        </button>
+      </div>
+
+      <div class="titlebar-right">
+        <!-- Quick Theme Selector -->
+        <select class="quick-theme-select desktop-only" id="quick-theme-select" title="Change Visual Theme">
+          <option value="vscode-dark">VS Code Dark+</option>
+          <option value="vscode-light">VS Code Light+</option>
+          <option value="dracula">Dracula</option>
+          <option value="monokai">Monokai Pro</option>
+          <option value="one-dark">One Dark Pro</option>
+          <option value="github-dark">GitHub Dark</option>
+          <option value="cyberpunk">Cyberpunk Neon</option>
+        </select>
+
+        <button class="icon-btn desktop-only" id="btn-toggle-fullscreen" title="Toggle Fullscreen">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer Backdrop Overlay -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+    <!-- ======================================================================
+         2. MAIN WRAPPER (Activity Bar + Sidebar + Editor + Terminal)
+         ====================================================================== -->
+    <div class="main-wrapper">
+
+      <!-- Activity Bar (Far Left) -->
+      <aside class="activity-bar">
+        <div class="activity-group">
+          <!-- Explorer -->
+          <button class="activity-btn active" data-panel="explorer" title="Explorer (Files & Folders)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+              <polyline points="13 2 13 9 20 9"></polyline>
+            </svg>
+          </button>
+          <!-- Python Academy (تعلم بايثون التفاعلي) -->
+          <button class="activity-btn" data-panel="academy" title="Python Academy (تعلم وشروحات بايثون والمكتبات)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+            </svg>
+          </button>
+          <!-- GitHub Cloud Sync -->
+          <button class="activity-btn" data-panel="github" title="GitHub & Cloud Storage">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+              </path>
+            </svg>
+          </button>
+          <!-- Packages -->
+          <button class="activity-btn" data-panel="packages" title="Python Packages (micropip)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="m7.5 4.27 9 5.15M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5M12 22V12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="activity-group">
+          <!-- Shortcuts -->
+          <button class="activity-btn" data-panel="shortcuts" title="Shortcuts & Quick Guide">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </button>
+          <!-- Settings -->
+          <button class="activity-btn" data-panel="settings" title="Settings & Themes">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+              </path>
+            </svg>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Sidebar (Collapsible & Resizable) -->
+      <section class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <span id="sidebar-panel-title">Explorer</span>
+          <div class="sidebar-actions">
+            <button class="sidebar-action-btn" id="btn-new-file" title="New File">📄+</button>
+            <button class="sidebar-action-btn" id="btn-new-folder" title="New Folder">📁+</button>
+            <button class="sidebar-action-btn" id="btn-refresh-tree" title="Refresh">🔄</button>
+            <button class="sidebar-action-btn mobile-close-btn" id="btn-close-sidebar-mobile" title="Close">✕</button>
+          </div>
+        </div>
+
+        <!-- Panel 1: Explorer -->
+        <div class="sidebar-panel active" id="panel-explorer">
+          <div class="file-tree" id="file-tree-container">
+            <!-- Dynamically populated by UIController -->
+          </div>
+          <!-- Mobile File Actions -->
+          <div class="mobile-file-actions" style="padding: 10px; display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn-secondary btn-block" id="btn-mobile-dl-file">⬇️ Download Active File</button>
+            <button class="btn-secondary btn-block" id="btn-mobile-dl-zip">📦 Export Project ZIP</button>
+          </div>
+        </div>
+
+        <!-- Panel 2: GitHub & Cloud Sync -->
+        <div class="sidebar-panel" id="panel-github">
+          <div class="pane-content">
+            <div class="pane-section">
+              <span class="pane-title">GitHub Authentication</span>
+              <p class="pane-desc">Enter your GitHub Personal Access Token (PAT) with <code>repo</code> &
+                <code>gist</code> scopes to sync code to the cloud.</p>
+              <div class="form-group">
+                <label for="github-token-input">Personal Access Token (PAT):</label>
+                <input type="password" id="github-token-input" placeholder="ghp_xxxxxxxxxxxx">
+              </div>
+              <button class="btn-secondary btn-block" id="btn-save-github-config">Save Credentials</button>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-color);">
+
+            <!-- Gist Cloud Save -->
+            <div class="pane-section">
+              <span class="pane-title">☁️ 1-Click GitHub Gist</span>
+              <p class="pane-desc">Save your entire project or load an existing Gist in seconds.</p>
+              <div class="form-group">
+                <label for="github-gist-id-input">Gist ID:</label>
+                <input type="text" id="github-gist-id-input" placeholder="e.g. 8d39f4a...">
+              </div>
+              <div class="btn-group">
+                <button class="btn-primary" id="btn-save-gist" style="flex: 1;">☁️ Save to Gist</button>
+                <button class="btn-secondary" id="btn-load-gist" style="flex: 1;">📥 Load Gist</button>
+              </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-color);">
+
+            <!-- Repository Sync -->
+            <div class="pane-section">
+              <span class="pane-title">🐙 GitHub Repository Sync</span>
+              <p class="pane-desc">Push project files directly to a repository branch.</p>
+              <div class="form-group">
+                <label for="github-repo-input">Repository (owner/repo):</label>
+                <input type="text" id="github-repo-input" placeholder="username/my-project">
+              </div>
+              <div class="form-group">
+                <label for="github-branch-input">Branch:</label>
+                <input type="text" id="github-branch-input" placeholder="main" value="main">
+              </div>
+              <div class="form-group">
+                <label for="github-commit-msg">Commit Message:</label>
+                <input type="text" id="github-commit-msg" placeholder="Updated code from Queen Rory">
+              </div>
+              <div class="btn-group">
+                <button class="btn-primary" id="btn-commit-repo" style="flex: 1;">🚀 Push to Repo</button>
+                <button class="btn-secondary" id="btn-clone-repo" style="flex: 1;">📥 Clone Repo</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Python Academy (تعلم بايثون التفاعلي) -->
+        <div class="sidebar-panel" id="panel-academy">
+          <div class="pane-content">
+            <div class="pane-section">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span class="pane-title">🎓 أكاديمية بايثون التفاعلية</span>
+                <span style="font-size: 10px; background: rgba(78, 201, 176, 0.2); color: var(--accent-color); padding: 2px 6px; border-radius: 10px; font-weight: bold;">12 درس متاح</span>
+              </div>
+              <p class="pane-desc">
+                شروحات شاملة ومبسطة لأساسيات لغة بايثون والمكتبات الأساسية، مع أمثلة تفاعلية قابلة للتشغيل المباشر بنقرة واحدة!
+              </p>
+              <div class="form-group" style="margin-top: 8px; margin-bottom: 4px;">
+                <input type="text" id="academy-search-input" placeholder="🔍 ابحث في الدروس والمكتبات..." style="width: 100%;">
+              </div>
+            </div>
+
+            <div class="pane-section" style="padding-top: 4px;">
+              <div id="academy-lessons-container" class="academy-lessons-list">
+                <!-- Lessons populated dynamically by js/academy.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Python Packages (micropip) -->
+        <div class="sidebar-panel" id="panel-packages">
+          <div class="pane-content">
+            <div class="pane-section">
+              <span class="pane-title">Install Packages (pip)</span>
+              <p class="pane-desc">You can install any pure-Python wheel from PyPI or official WebAssembly packages
+                directly in your browser.</p>
+              <div class="form-group">
+                <label for="input-package-name">Package Name or pip install command:</label>
+                <input type="text" id="input-package-name" placeholder="numpy, pandas, requests, etc.">
+              </div>
+              <button class="btn-primary btn-block" id="btn-install-package">📥 Install Package</button>
+            </div>
+
+            <!-- Quick Install Chips -->
+            <div class="pane-section">
+              <span class="pane-title">⚡ Quick Install Popular Packages</span>
+              <p class="pane-desc" style="font-size: 11px;">Click any package below to install immediately:</p>
+              <div class="package-chips-grid">
+                <button class="pkg-chip" data-pkg="numpy">numpy</button>
+                <button class="pkg-chip" data-pkg="pandas">pandas</button>
+                <button class="pkg-chip" data-pkg="matplotlib">matplotlib</button>
+                <button class="pkg-chip" data-pkg="requests">requests</button>
+                <button class="pkg-chip" data-pkg="beautifulsoup4">bs4</button>
+                <button class="pkg-chip" data-pkg="scikit-learn">sklearn</button>
+                <button class="pkg-chip" data-pkg="sympy">sympy</button>
+                <button class="pkg-chip" data-pkg="scipy">scipy</button>
+                <button class="pkg-chip" data-pkg="tabulate">tabulate</button>
+                <button class="pkg-chip" data-pkg="pillow">pillow</button>
+                <button class="pkg-chip" data-pkg="rich">rich</button>
+                <button class="pkg-chip" data-pkg="networkx">networkx</button>
+              </div>
+            </div>
+
+            <!-- Information Alert -->
+            <div class="package-info-box"
+              style="background: rgba(0, 122, 204, 0.15); border: 1px solid var(--accent-color); border-radius: 4px; padding: 10px; font-size: 11.5px; line-height: 1.4;">
+              <strong>ℹ️ ملاحظة حول الحزم غير المدعومة:</strong>
+              <p style="margin-top: 4px;">الحزم التي تتطلب برامج نظام محلية (مثل nmap أو C-extensions غير مترجمة) لا
+                تعمل داخل المتصفح المعزول. استخدم الحزم الخالصة المكتوبة ببايثون.</p>
+            </div>
+
+            <div class="pane-section">
+              <span class="pane-title">Installed Packages</span>
+              <div id="installed-packages-list" style="display: flex; flex-direction: column; gap: 6px;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 4: Settings & Themes -->
+        <div class="sidebar-panel" id="panel-settings">
+          <div class="pane-content">
+            <div class="pane-section">
+              <span class="pane-title">Theme Selection</span>
+              <div class="form-group">
+                <label for="settings-theme-select">Color Theme:</label>
+                <select id="settings-theme-select">
+                  <option value="vscode-dark">VS Code Dark+ (Default)</option>
+                  <option value="vscode-light">VS Code Light+</option>
+                  <option value="dracula">Dracula</option>
+                  <option value="monokai">Monokai Pro</option>
+                  <option value="one-dark">One Dark Pro</option>
+                  <option value="github-dark">GitHub Dark</option>
+                  <option value="cyberpunk">Cyberpunk Neon</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="pane-section">
+              <span class="pane-title">Editor Options</span>
+              <div class="form-group">
+                <label for="settings-font-size">Font Size (px):</label>
+                <input type="number" id="settings-font-size" value="14" min="10" max="28">
+              </div>
+
+              <div class="switch-group">
+                <label for="settings-word-wrap">Word Wrap</label>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settings-word-wrap" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="switch-group">
+                <label for="settings-minimap">Code Minimap</label>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settings-minimap" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="switch-group">
+                <label for="settings-line-numbers">Line Numbers</label>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settings-line-numbers" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="pane-section" style="margin-top: 10px;">
+              <span class="pane-title">Workspace Danger Zone</span>
+              <button class="btn-danger btn-block" id="btn-reset-workspace">⚠️ Reset Workspace</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 5: Shortcuts & Help -->
+        <div class="sidebar-panel" id="panel-shortcuts">
+          <div class="pane-content">
+            <div class="pane-section">
+              <span class="pane-title">Keyboard Shortcuts</span>
+              <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; color: var(--text-primary);">
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 6px 0;">Run Python</td>
+                  <td style="text-align: right;"><kbd
+                      style="background: var(--bg-dropdown); padding: 2px 5px; border-radius: 3px;">F5</kbd> or <kbd
+                      style="background: var(--bg-dropdown); padding: 2px 5px; border-radius: 3px;">Ctrl+Enter</kbd>
+                  </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 6px 0;">Save File</td>
+                  <td style="text-align: right;"><kbd
+                      style="background: var(--bg-dropdown); padding: 2px 5px; border-radius: 3px;">Ctrl+S</kbd></td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 6px 0;">Toggle Sidebar</td>
+                  <td style="text-align: right;"><kbd
+                      style="background: var(--bg-dropdown); padding: 2px 5px; border-radius: 3px;">Ctrl+B</kbd></td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 6px 0;">Toggle Terminal</td>
+                  <td style="text-align: right;"><kbd
+                      style="background: var(--bg-dropdown); padding: 2px 5px; border-radius: 3px;">Ctrl+`</kbd></td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 6px 0;">Find in Code</td>
+                  <td style="text-align: right;"><kbd
+                      style="background: var(--bg-dropdown); padding: 2px 5px; border-radius: 3px;">Ctrl+F</kbd></td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 6px 0;">Replace in Code</td>
+                  <td style="text-align: right;"><kbd
+                      style="background: var(--bg-dropdown); padding: 2px 5px; border-radius: 3px;">Ctrl+H</kbd></td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="pane-section">
+              <span class="pane-title">Terminal Commands Guide</span>
+              <p class="pane-desc">In the interactive terminal below, you can type:
+                <br>• <code>python main.py</code> to run your script
+                <br>• <code>python</code> for the interactive REPL
+                <br>• <code>pip install &lt;pkg&gt;</code> to install packages
+                <br>• <code>ls</code>, <code>cat</code>, <code>touch</code>, <code>clear</code>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sidebar Resizer Handle -->
+      <div class="resizer-x" id="resizer-x"></div>
+
+      <!-- Main Workspace (Tabs + Editor + Mobile Toolbar + Terminal) -->
+      <main class="workspace-wrapper">
+        <!-- Editor Tabs Bar -->
+        <div class="editor-tabs-bar" id="editor-tabs-bar">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Breadcrumbs Navigation -->
+        <div class="breadcrumbs" id="breadcrumbs-bar">
+          <span class="crumb-item">workspace</span>
+          <span class="crumb-sep">›</span>
+          <span class="crumb-item">main.py</span>
+        </div>
+
+        <!-- Monaco Editor Mount Point -->
+        <div class="editor-container">
+          <div id="monaco-editor-instance"></div>
+        </div>
+
+        <!-- Mobile / Touch Coding Assistant Toolbar (شريط مساعدة البرمجة للجوال والآيباد) -->
+        <div class="mobile-code-toolbar" id="mobile-code-toolbar">
+          <button class="mobile-code-key" data-insert="    ">Tab</button>
+          <button class="mobile-code-key" data-insert=":">:</button>
+          <button class="mobile-code-key" data-insert="()" data-offset="1">( )</button>
+          <button class="mobile-code-key" data-insert="[]" data-offset="1">[ ]</button>
+          <button class="mobile-code-key" data-insert="{}" data-offset="1">{ }</button>
+          <button class="mobile-code-key" data-insert='""' data-offset="1">" "</button>
+          <button class="mobile-code-key" data-insert="''" data-offset="1">' '</button>
+          <button class="mobile-code-key" data-insert="=">=</button>
+          <button class="mobile-code-key" data-insert="#">#</button>
+          <button class="mobile-code-key" data-insert="_">_</button>
+          <button class="mobile-code-key" data-insert="+">+</button>
+          <button class="mobile-code-key" data-insert="-">-</button>
+          <button class="mobile-code-key" data-insert="*">*</button>
+          <button class="mobile-code-key" data-insert="/">/</button>
+          <button class="mobile-code-key" data-insert="->">-></button>
+          <button class="mobile-code-key" data-insert="def ">def</button>
+          <button class="mobile-code-key" data-insert="return ">return</button>
+          <button class="mobile-code-key" data-insert="if ">if</button>
+          <button class="mobile-code-key" data-insert="for ">for</button>
+          <button class="mobile-code-key" data-insert="in ">in</button>
+        </div>
+
+        <!-- Terminal Resizer Handle -->
+        <div class="resizer-y" id="resizer-y"></div>
+
+        <!-- ==================================================================
+             Dockable Interactive Terminal / Shell Panel
+             ================================================================== -->
+        <section class="terminal-panel" id="terminal-panel">
+          <div class="terminal-header">
+            <div class="terminal-tabs">
+              <button class="term-tab-btn active" data-tab="terminal">💻 TERMINAL</button>
+              <button class="term-tab-btn" data-tab="repl">🐍 PYTHON REPL</button>
+              <button class="term-tab-btn" data-tab="output">▶ SCRIPT OUTPUT</button>
+              <button class="term-tab-btn" data-tab="plots">📊 PLOTS</button>
+            </div>
+            <div class="terminal-actions">
+              <button class="terminal-action-btn" id="btn-clear-terminal" title="Clear Console">🗑️ Clear</button>
+              <button class="terminal-action-btn" id="btn-copy-terminal" title="Copy Output">📋 Copy</button>
+              <button class="terminal-action-btn" id="btn-maximize-terminal" title="Maximize Terminal">⛶
+                Maximize</button>
+              <button class="terminal-action-btn" id="btn-collapse-terminal" title="Toggle Terminal Height">↕️
+                Toggle</button>
+            </div>
+          </div>
+
+          <!-- View Pane 1: Interactive Terminal CLI -->
+          <div class="terminal-view-pane active" id="term-pane-terminal">
+            <div class="terminal-cli-body" id="terminal-body-cli">
+              <div id="terminal-cli-history"></div>
+              <div class="terminal-cli-input-line">
+                <span class="terminal-cli-prompt" id="terminal-cli-prompt-label">
+                  <span class="prompt-user">user@pycode</span>:<span class="prompt-path">~/workspace</span>$
+                </span>
+                <input type="text" id="terminal-cli-input" class="terminal-cli-input" autocomplete="off"
+                  spellcheck="false" placeholder="type command (e.g. python main.py or pip install numpy)">
+              </div>
+            </div>
+          </div>
+
+          <!-- View Pane 2: Dedicated Python REPL -->
+          <div class="terminal-view-pane" id="term-pane-repl">
+            <div class="terminal-body" id="terminal-body-repl">
+              <div class="term-line term-info">🐍 Python 3.12 Interactive REPL Console</div>
+              <div class="term-line term-muted">Type Python expressions directly in the Terminal tab after typing
+                <code>python</code>, or use the interactive CLI prompt!</div>
+            </div>
+          </div>
+
+          <!-- View Pane 3: Main Script Runner Output -->
+          <div class="terminal-view-pane" id="term-pane-output">
+            <div class="terminal-body" id="terminal-body">
+              <!-- Execution logs printed here -->
+            </div>
+          </div>
+
+          <!-- View Pane 4: Matplotlib Plots -->
+          <div class="terminal-view-pane" id="term-pane-plots">
+            <div id="matplotlib-target" class="plots-container">
+              <div class="plots-placeholder">
+                <span>📈 No plots rendered yet.</span>
+                <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Run a script using
+                  <code>matplotlib.pyplot.show()</code> to view plots here!</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ======================================================================
+         3. MOBILE BOTTOM NAVIGATION (للأجهزة المحمولة والآيباد)
+         ====================================================================== -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+      <button class="mobile-nav-item active" data-action="files">
+        <span class="nav-icon">📁</span>
+        <span class="nav-label">Files</span>
+      </button>
+      <button class="mobile-nav-item" data-action="academy">
+        <span class="nav-icon">🎓</span>
+        <span class="nav-label">Academy</span>
+      </button>
+      <button class="mobile-nav-item mobile-run-btn" data-action="run">
+        <span class="nav-icon">▶</span>
+        <span class="nav-label">Run</span>
+      </button>
+      <button class="mobile-nav-item" data-action="terminal">
+        <span class="nav-icon">💻</span>
+        <span class="nav-label">Terminal</span>
+      </button>
+      <button class="mobile-nav-item" data-action="github">
+        <span class="nav-icon">☁️</span>
+        <span class="nav-label">Cloud</span>
+      </button>
+      <button class="mobile-nav-item" data-action="settings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Settings</span>
+      </button>
+    </nav>
+
+    <!-- ======================================================================
+         4. STATUS BAR (Bottom)
+         ====================================================================== -->
+    <footer class="statusbar desktop-only">
+      <div class="statusbar-left">
+        <div class="status-item" id="status-git-branch" title="Git Branch & Cloud Sync">
+          🐙 Cloud: Local Only
+        </div>
+        <div class="status-item">
+          <span class="status-indicator-dot loading" id="pyodide-status-dot"></span>
+          <span id="pyodide-status-text">Loading Python 3.12...</span>
+        </div>
+      </div>
+
+      <div class="statusbar-right">
+        <div class="status-item" id="status-cursor-pos">Ln 1, Col 1</div>
+        <div class="status-item">Spaces: 4</div>
+        <div class="status-item">UTF-8</div>
+        <div class="status-item">Python 3.12 (Pyodide)</div>
+        <div class="status-item" id="status-theme-name">vscode-dark</div>
+      </div>
+    </footer>
+
+    <!-- ======================================================================
+         5. CONTEXT MENU & TOASTS
+         ====================================================================== -->
+    <!-- File Context Menu -->
+    <div class="context-menu" id="file-context-menu">
+      <div class="context-menu-item" id="ctx-rename">✏️ Rename</div>
+      <div class="context-menu-item" id="ctx-download">⬇️ Download to PC</div>
+      <div class="context-menu-separator"></div>
+      <div class="context-menu-item" id="ctx-delete" style="color: var(--error-color);">🗑️ Delete</div>
+    </div>
+
+    <!-- Floating Toast Notifications -->
+    <div id="toast-container"></div>
+  </div>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/filesystem.js"></script>
+  <script src="js/pyrunner.js"></script>
+  <script src="js/github.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/terminal.js"></script>
+  <script src="js/academy.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

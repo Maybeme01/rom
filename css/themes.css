@@ -1,0 +1,396 @@
+/* ==========================================================================
+   Queen Rory - Theme Definitions
+   Supports: VS Code Dark+, VS Code Light+, Dracula, Monokai, One Dark, GitHub Dark, Synthwave
+   ========================================================================== */
+
+:root {
+  /* Default: VS Code Dark+ */
+  --bg-activity: #333333;
+  --bg-activity-active: #1e1e1e;
+  --activity-icon: #858585;
+  --activity-icon-active: #ffffff;
+
+  --bg-sidebar: #252526;
+  --sidebar-header: #333333;
+  --sidebar-border: #1e1e1e;
+  --sidebar-title: #bbbbbb;
+
+  --bg-editor: #1e1e1e;
+  --editor-line-highlight: #282828;
+
+  --bg-tabs: #252526;
+  --tab-active-bg: #1e1e1e;
+  --tab-inactive-bg: #2d2d2d;
+  --tab-active-text: #ffffff;
+  --tab-inactive-text: #969696;
+  --tab-border: #1e1e1e;
+
+  --bg-terminal: #181818;
+  --terminal-header: #252526;
+  --terminal-text: #cccccc;
+  --terminal-border: #333333;
+
+  --bg-statusbar: #007acc;
+  --statusbar-text: #ffffff;
+
+  --bg-dropdown: #3c3c3c;
+  --bg-input: #3c3c3c;
+  --border-input: #555555;
+  --text-input: #cccccc;
+
+  --text-primary: #cccccc;
+  --text-secondary: #969696;
+  --text-muted: #666666;
+
+  --accent-color: #007acc;
+  --accent-hover: #0098ff;
+  --accent-text: #ffffff;
+
+  --success-color: #4ec9b0;
+  --warning-color: #cca700;
+  --error-color: #f48771;
+  --info-color: #75beff;
+
+  --item-hover: #2a2d2e;
+  --item-active: #094771;
+  --border-color: #3e3e42;
+  --scrollbar-thumb: #424242;
+
+  --modal-bg: #252526;
+  --modal-overlay: rgba(0, 0, 0, 0.65);
+  --shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* 1. VS Code Light+ Theme */
+[data-theme="vscode-light"] {
+  --bg-activity: #2c2c2c;
+  --bg-activity-active: #ffffff;
+  --activity-icon: #cccccc;
+  --activity-icon-active: #ffffff;
+
+  --bg-sidebar: #f3f3f3;
+  --sidebar-header: #e8e8e8;
+  --sidebar-border: #e0e0e0;
+  --sidebar-title: #616161;
+
+  --bg-editor: #ffffff;
+  --editor-line-highlight: #f5f5f5;
+
+  --bg-tabs: #ececec;
+  --tab-active-bg: #ffffff;
+  --tab-inactive-bg: #ececec;
+  --tab-active-text: #333333;
+  --tab-inactive-text: #666666;
+  --tab-border: #e0e0e0;
+
+  --bg-terminal: #f8f8f8;
+  --terminal-header: #f3f3f3;
+  --terminal-text: #333333;
+  --terminal-border: #e0e0e0;
+
+  --bg-statusbar: #007acc;
+  --statusbar-text: #ffffff;
+
+  --bg-dropdown: #ffffff;
+  --bg-input: #ffffff;
+  --border-input: #cccccc;
+  --text-input: #333333;
+
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+
+  --accent-color: #007acc;
+  --accent-hover: #0062a3;
+  --accent-text: #ffffff;
+
+  --item-hover: #e8e8e8;
+  --item-active: #d6ebff;
+  --border-color: #e5e5e5;
+  --scrollbar-thumb: #c1c1c1;
+
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(0, 0, 0, 0.4);
+  --shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* 2. Dracula Theme */
+[data-theme="dracula"] {
+  --bg-activity: #21222c;
+  --bg-activity-active: #282a36;
+  --activity-icon: #6272a4;
+  --activity-icon-active: #f8f8f2;
+
+  --bg-sidebar: #21222c;
+  --sidebar-header: #191a21;
+  --sidebar-border: #191a21;
+  --sidebar-title: #bd93f9;
+
+  --bg-editor: #282a36;
+  --editor-line-highlight: #44475a;
+
+  --bg-tabs: #191a21;
+  --tab-active-bg: #282a36;
+  --tab-inactive-bg: #21222c;
+  --tab-active-text: #f8f8f2;
+  --tab-inactive-text: #6272a4;
+  --tab-border: #191a21;
+
+  --bg-terminal: #1e1f29;
+  --terminal-header: #21222c;
+  --terminal-text: #f8f8f2;
+  --terminal-border: #44475a;
+
+  --bg-statusbar: #bd93f9;
+  --statusbar-text: #282a36;
+
+  --bg-dropdown: #44475a;
+  --bg-input: #282a36;
+  --border-input: #6272a4;
+  --text-input: #f8f8f2;
+
+  --text-primary: #f8f8f2;
+  --text-secondary: #bd93f9;
+  --text-muted: #6272a4;
+
+  --accent-color: #ff79c6;
+  --accent-hover: #ff92d0;
+  --accent-text: #282a36;
+
+  --success-color: #50fa7b;
+  --warning-color: #f1fa8c;
+  --error-color: #ff5555;
+  --info-color: #8be9fd;
+
+  --item-hover: #44475a;
+  --item-active: #44475a;
+  --border-color: #44475a;
+  --scrollbar-thumb: #6272a4;
+
+  --modal-bg: #282a36;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+}
+
+/* 3. Monokai Theme */
+[data-theme="monokai"] {
+  --bg-activity: #1e1f1c;
+  --bg-activity-active: #272822;
+  --activity-icon: #75715e;
+  --activity-icon-active: #f8f8f2;
+
+  --bg-sidebar: #1e1f1c;
+  --sidebar-header: #141411;
+  --sidebar-border: #141411;
+  --sidebar-title: #a6e22e;
+
+  --bg-editor: #272822;
+  --editor-line-highlight: #3e3d32;
+
+  --bg-tabs: #141411;
+  --tab-active-bg: #272822;
+  --tab-inactive-bg: #1e1f1c;
+  --tab-active-text: #f8f8f2;
+  --tab-inactive-text: #75715e;
+  --tab-border: #141411;
+
+  --bg-terminal: #191916;
+  --terminal-header: #1e1f1c;
+  --terminal-text: #f8f8f2;
+  --terminal-border: #3e3d32;
+
+  --bg-statusbar: #a6e22e;
+  --statusbar-text: #272822;
+
+  --bg-dropdown: #3e3d32;
+  --bg-input: #272822;
+  --border-input: #75715e;
+  --text-input: #f8f8f2;
+
+  --text-primary: #f8f8f2;
+  --text-secondary: #e6db74;
+  --text-muted: #75715e;
+
+  --accent-color: #fd971f;
+  --accent-hover: #ffa83d;
+  --accent-text: #272822;
+
+  --success-color: #a6e22e;
+  --warning-color: #e6db74;
+  --error-color: #f92672;
+  --info-color: #66d9ef;
+
+  --item-hover: #3e3d32;
+  --item-active: #49483e;
+  --border-color: #3e3d32;
+  --scrollbar-thumb: #75715e;
+
+  --modal-bg: #272822;
+}
+
+/* 4. One Dark Pro Theme */
+[data-theme="one-dark"] {
+  --bg-activity: #21252b;
+  --bg-activity-active: #282c34;
+  --activity-icon: #5c6370;
+  --activity-icon-active: #abb2bf;
+
+  --bg-sidebar: #21252b;
+  --sidebar-header: #1b1d23;
+  --sidebar-border: #181a1f;
+  --sidebar-title: #61afef;
+
+  --bg-editor: #282c34;
+  --editor-line-highlight: #2c313a;
+
+  --bg-tabs: #1e2227;
+  --tab-active-bg: #282c34;
+  --tab-inactive-bg: #21252b;
+  --tab-active-text: #d7dae0;
+  --tab-inactive-text: #5c6370;
+  --tab-border: #181a1f;
+
+  --bg-terminal: #1b1d23;
+  --terminal-header: #21252b;
+  --terminal-text: #abb2bf;
+  --terminal-border: #282c34;
+
+  --bg-statusbar: #61afef;
+  --statusbar-text: #1e2227;
+
+  --bg-dropdown: #2c313a;
+  --bg-input: #1b1d23;
+  --border-input: #3e4451;
+  --text-input: #abb2bf;
+
+  --text-primary: #abb2bf;
+  --text-secondary: #98c379;
+  --text-muted: #5c6370;
+
+  --accent-color: #61afef;
+  --accent-hover: #7cbbf2;
+  --accent-text: #1e2227;
+
+  --success-color: #98c379;
+  --warning-color: #e5c07b;
+  --error-color: #e06c75;
+  --info-color: #61afef;
+
+  --item-hover: #2c313a;
+  --item-active: #3e4451;
+  --border-color: #3b4048;
+  --scrollbar-thumb: #4b5263;
+
+  --modal-bg: #282c34;
+}
+
+/* 5. GitHub Dark Theme */
+[data-theme="github-dark"] {
+  --bg-activity: #0d1117;
+  --bg-activity-active: #161b22;
+  --activity-icon: #7d8590;
+  --activity-icon-active: #f0f6fc;
+
+  --bg-sidebar: #0d1117;
+  --sidebar-header: #161b22;
+  --sidebar-border: #21262d;
+  --sidebar-title: #7ee787;
+
+  --bg-editor: #0d1117;
+  --editor-line-highlight: #161b22;
+
+  --bg-tabs: #010409;
+  --tab-active-bg: #0d1117;
+  --tab-inactive-bg: #010409;
+  --tab-active-text: #f0f6fc;
+  --tab-inactive-text: #7d8590;
+  --tab-border: #21262d;
+
+  --bg-terminal: #090d12;
+  --terminal-header: #161b22;
+  --terminal-text: #c9d1d9;
+  --terminal-border: #21262d;
+
+  --bg-statusbar: #238636;
+  --statusbar-text: #ffffff;
+
+  --bg-dropdown: #21262d;
+  --bg-input: #0d1117;
+  --border-input: #30363d;
+  --text-input: #c9d1d9;
+
+  --text-primary: #c9d1d9;
+  --text-secondary: #7ee787;
+  --text-muted: #7d8590;
+
+  --accent-color: #2f81f7;
+  --accent-hover: #58a6ff;
+  --accent-text: #ffffff;
+
+  --success-color: #3fb950;
+  --warning-color: #d29922;
+  --error-color: #f85149;
+  --info-color: #58a6ff;
+
+  --item-hover: #161b22;
+  --item-active: #1f6feb33;
+  --border-color: #30363d;
+  --scrollbar-thumb: #30363d;
+
+  --modal-bg: #161b22;
+}
+
+/* 6. Cyberpunk / Neon Theme */
+[data-theme="cyberpunk"] {
+  --bg-activity: #120b1f;
+  --bg-activity-active: #201335;
+  --activity-icon: #7a639b;
+  --activity-icon-active: #00ffcc;
+
+  --bg-sidebar: #180e2b;
+  --sidebar-header: #120b1f;
+  --sidebar-border: #ff007f44;
+  --sidebar-title: #00ffcc;
+
+  --bg-editor: #1a0f30;
+  --editor-line-highlight: #28174a;
+
+  --bg-tabs: #120b1f;
+  --tab-active-bg: #1a0f30;
+  --tab-inactive-bg: #140b24;
+  --tab-active-text: #00ffcc;
+  --tab-inactive-text: #7a639b;
+  --tab-border: #ff007f33;
+
+  --bg-terminal: #0e071c;
+  --terminal-header: #180e2b;
+  --terminal-text: #00ffcc;
+  --terminal-border: #ff007f44;
+
+  --bg-statusbar: #ff007f;
+  --statusbar-text: #ffffff;
+
+  --bg-dropdown: #28174a;
+  --bg-input: #120b1f;
+  --border-input: #00ffcc88;
+  --text-input: #00ffcc;
+
+  --text-primary: #f0e6ff;
+  --text-secondary: #ff007f;
+  --text-muted: #7a639b;
+
+  --accent-color: #00ffcc;
+  --accent-hover: #33ffdb;
+  --accent-text: #120b1f;
+
+  --success-color: #00ffcc;
+  --warning-color: #ffe600;
+  --error-color: #ff0055;
+  --info-color: #00bfff;
+
+  --item-hover: #28174a;
+  --item-active: #ff007f44;
+  --border-color: #ff007f44;
+  --scrollbar-thumb: #ff007f88;
+
+  --modal-bg: #180e2b;
+}
